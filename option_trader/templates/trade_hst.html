@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rt">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css" integrity="sha384-WJUUqfoMmnfkBLne5uxXj+na/c7sesSJ32gI7GfCk4zO4GthUKhSEGyvQ839BC51" crossorigin="anonymous">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+
+    <title>Trade History</title>
+    <style>
+        /* Custom CSS for responsive modifications */
+        
+        .container {
+            padding: 15px;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        #totalProfitLoss {
+            font-weight: bold;
+        }
+        
+        #totalProfitLossAll {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'trade_hst' %}"> Trade History </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'stratedy_one' %}"> Strategy One View </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'stratedy_one_edit' %}"> Strategy One Edit </a>
+                    </li>
+
+                </ul>
+                {% comment %}
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form> {% endcomment %}
+            </div>
+        </div>
+    </nav>
+    <h1 class="text-center my-3">Trade History</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 mb-3">
+                <label class="form-label">Select Date Range</label>
+            </div>
+            <div class="col-sm-12 col-md-4 mb-3">
+                <input type="date" class="form-control" id="dateRangeStart">
+            </div>
+            <div class="col-sm-12 col-md-4 mb-3">
+                <input type="date" class="form-control" id="dateRangeEnd">
+            </div>
+            <div class="col-sm-12 text-center">
+                <button class="btn btn-primary" id="searchBtn">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table my-4" id="tradeTable">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Order Time</th>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Trading Symbol</th>
+                        <th scope="col">Buy/Sell</th>
+                        <th scope="col">Exchange</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Entry Price</th>
+                        <th scope="col">Ltp</th>
+                        <th scope="col">Exit Price</th>
+                        <th scope="col">Profit/Loss</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" id="orderData">
+                    <!-- Table rows will be dynamically populated -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="9" class="text-end">Total Profit/Loss :</th>
+                        <th id="totalProfitLoss" class="text-center"></th>
+                    </tr>
+                    <tr>
+                        <th colspan="9" class="text-end">Total Profit/Loss for All Entries:</th>
+                        <th id="totalProfitLossAll" class="text-center"></th>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="myTable">
+                <tr>
+                    <td>Row 1 - Column 1</td>
+                    <td>Row 1 - Column 2</td>
+                    <td>Row 1 - Column 3</td>
+                </tr>
+                <tr>
+                    <td>Row 2 - Column 1</td>
+                    <td>Row 2 - Column 2</td>
+                    <td>Row 2 - Column 3</td>
+                </tr>
+                <tr>
+                    <td>Row 3 - Column 1</td>
+                    <td>Row 3 - Column 2</td>
+                    <td>Row 3 - Column 3</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Array to store profit/loss values
+            var profitLossArray = [];
+
+            // Function to retrieve paper orders data
+            function getPaperOrders(start_date, end_date) {
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/get-trad-history/', // Replace with the actual URL of your API endpoint
+                    data: {
+                        start_date: start_date,
+                        end_date: end_date
+                    },
+                    success: function(response) {
+                        // Clear existing table data and reset profit/loss array
+                        $('#orderData').empty();
+                        profitLossArray = [];
+
+                        // Iterate through the data and populate the table rows
+                        for (var i = 0; i < response.length; i++) {
+                            var order = response[i];
+
+                            var buySell = order.ordertype;
+                            var entryPrice = parseFloat(order.price);
+                            var exitPrice = parseFloat(order.squareoff);
+                            var qty = parseFloat(order.quantity);
+
+                            var profitLoss = 0;
+                            if (order.position_close === 'TRUE') {
+                                if (buySell === 'SELL') {
+                                    profitLoss = (entryPrice * qty) - (exitPrice * qty);
+                                } else {
+                                    profitLoss = (exitPrice * qty) - (entryPrice * qty);
+                                }
+                                profitLoss = profitLoss.toFixed(2);
+                                profitLossArray.push(profitLoss);
+                            }
+
+                            console.log(order, '-------')
+
+                            var row = '<tr>' +
+                                '<th scope="row" class="' + order.tradingsymbol + '_' + order.exchange + '">' + (i + 1) + '</th>' +
+                                '<td>' + order.order_id + '</td>' +
+                                '<td>' + order.time + '</td>' +
+                                '<td>' + order.tradingsymbol + '</td>' +
+                                '<td>' + buySell + '</td>' +
+                                '<td>' + order.exchange + '</td>' +
+                                '<td>' + order.duration + '</td>' +
+                                '<td>' + order.quantity + '</td>' +
+                                '<td>' + entryPrice + '</td>' +
+                                '<td>' + '' + '</td>' +
+                                '<td>' + exitPrice + '</td>' +
+                                '<td>' + profitLoss + '</td>' +
+                                '</tr>';
+
+                            // Append the row to the table body
+                            $('#orderData').append(row);
+                        }
+
+                        // Initialize DataTable
+                        $('#tradeTable').DataTable({
+                            "paging": true,
+                            "lengthMenu": [10, 25, 50, 100],
+                            "pageLength": 10,
+                            "drawCallback": function(settings) {
+                                // Calculate and display the total profit/loss for the displayed entries
+                                calculateTotalProfitLoss();
+                            },
+                            "order": [
+                                [0, 'asc']
+                            ], // Sort by the first column in ascending order
+                            "language": {
+                                "paginate": {
+                                    "previous": "Previous",
+                                    "next": "Next"
+                                }
+                            }
+                        });
+
+                        // Calculate and display the total profit/loss for the selected entries
+                        calculateTotalProfitLoss();
+
+                        // Calculate and display the total profit/loss for all entries
+                        calculateTotalProfitLossAll();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log('Error:', errorThrown);
+                    }
+                });
+            }
+
+            const table = document.getElementById('myTable');
+            const columnIndex = 1; // Index of the column to be changed (e.g., 0 for the first column)
+
+            const newColumnContent = 'New Column Content'; // The new text content for the column
+
+            // Loop through the rows and update the content of the specific column
+            for (let i = 0; i < table.rows.length; i++) {
+                const cell = table.rows[i].cells[columnIndex];
+                cell.innerHTML = newColumnContent;
+            }
+
+            function Ltp_call_api(Symbol, Exchange) {
+                console.log(Symbol, Exchange)
+                    <!-- tradeTable -->
+
+            }
+            // Function to calculate and display the total profit/loss for the selected entries
+            function calculateTotalProfitLoss() {
+                var totalProfitLoss = 0;
+                var table = $('#tradeTable').DataTable();
+                var data = table.rows({
+                    page: 'current'
+                }).data(); // Get the data for the current page
+                data.each(function(value, index) {
+                    var profitLoss = parseFloat(value[9]);
+                    totalProfitLoss += profitLoss;
+                });
+                $('#totalProfitLoss').text(totalProfitLoss.toFixed(2));
+            }
+
+            // Function to calculate and display the total profit/loss for all entries
+            function calculateTotalProfitLossAll() {
+                var totalProfitLossAll = 0;
+                for (var i = 0; i < profitLossArray.length; i++) {
+                    var profitLoss = parseFloat(profitLossArray[i]);
+                    totalProfitLossAll += profitLoss;
+                }
+                $('#totalProfitLossAll').text(totalProfitLossAll.toFixed(2));
+            }
+
+            // Event listener for the search button click
+            $('#searchBtn').click(function() {
+                var startDate = $('#dateRangeStart').val();
+                var endDate = $('#dateRangeEnd').val();
+
+                // Call the API to retrieve paper orders data
+                getPaperOrders(startDate, endDate);
+            });
+        });
+    </script>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-TuMqZNT4HhqCmJw7DZyg1jkTNln4NzD7bE15FsyMWalONqf8SvqTNFfuJQjHINev" crossorigin="anonymous"></script>
+</body>
+
+</html>

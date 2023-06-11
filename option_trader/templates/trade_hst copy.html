@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ar" dir="rt">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css" integrity="sha384-WJUUqfoMmnfkBLne5uxXj+na/c7sesSJ32gI7GfCk4zO4GthUKhSEGyvQ839BC51" crossorigin="anonymous">
+
+    <title></title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'trade_hst' %}"> Trade History </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'stratedy_one' %}"> Strategy One View </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'stratedy_one_edit' %}"> Strategy One Edit </a>
+            </li>
+            
+          </ul>
+          {% comment %} <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> {% endcomment %}
+        </div>
+      </div>
+  </nav>
+    <h1><p class="text-center my-3"> Trade History </p></h1>
+    <div class="container">
+        <div class="nav-item row">
+        <label class="nav-link col-sm-2"> Symbol </label>
+        <label class="nav-link col-sm-2"> Segment </label>
+        <label class="nav-link col-sm-2"> START </label>
+        </div>
+        <input class="col-sm-1" placeholder="All">
+     </div>    
+     <table class="table my-4">
+        <thead>
+          <tr>
+            <th scope="col">Signal</th>
+            <th scope="col">Signal Time</th>
+            <th scope="col">Symbol</th>
+            <th scope="col">Start</th>
+            <th scope="col">Type</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Entry Price</th>
+            <th scope="col">Exit Price</th>
+            <th scope="col">P & L</th>
+            <th scope="col">Cumulative P&L</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr>
+              <th scope="row">1</th>
+              <td>2023-02-23</td>
+              <td>BANKNIFTY23FEB234002[o]</td>
+              <td>apex 1</td>
+              <td>LE</td>
+              <td>200</td>
+              <td>398.25</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>2023-02-23</td>
+                <td>BANKNIFTY23FEB2340PE[o]</td>
+                <td>apex 1</td>
+                <td>LX</td>
+                <td>200</td>
+                <td>-</td>
+                <td>552.05</td>
+                <td>30740.00</td>
+                <td>30740</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>2023-02-23</td>
+                <td>NIFTY23FEB234PE[o]</td>
+                <td>apex 1</td>
+                <td>LE</td>
+                <td>150</td>
+                <td>198.8</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td>2023-02-23</td>
+                <td>NIFTY23FEB23400PE[o]</td>
+                <td>apex 1</td>
+                <td>LX</td>
+                <td>150</td>
+                <td>-</td>
+                <td>231.7</td>
+                <td>5985.00</td>
+                <td>5985</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td colspan="2"><b> Total Cumulative P&L </b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="10"><strong>36725.00</strong></td>
+              </tr>
+            </tbody>
+        </table>  
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

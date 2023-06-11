@@ -1,0 +1,139 @@
+[
+    {
+        "select index": "BANKNIFTY",
+        "strategy start time":"9:35",
+        "strategy end time":"15:15",
+        "strategy list":[
+            {
+                "   ":"1",
+                "position":"BUY",
+                "option type":"CALL",
+                "expiry":"WEEKLY",
+                "select strike criteria":{
+                    "type":"PREMIUM RANGE",
+                    "lower range":"50",
+                    "upper range":"200"
+                },
+                "take profit":{
+                    "type":"POINT",
+                    "value":"50"
+                },
+                "stop loss":{
+                    "type":"POINT",
+                    "value":"25"
+                },
+                "trail stop loss":{
+                    "type":"POINT",
+                    "value one":"20",
+                    "value two":"10"
+                }
+            },
+            {
+                "total lot":"2",
+                "position":"SELL",
+                "option type":"PUT",
+                "expiry":"NEXT WEEKLY",
+                "select strike criteria":{
+                    "type":"STRIKE TYPE",
+                    "strike type":"OTM3"
+                },
+                "take profit":{
+                    "type":"PERCENTAGE",
+                    "value":"40"
+                },
+                "stop loss":{
+                    "type":"PERCENTAGE",
+                    "value":"50"
+                },
+                "trail stop loss":{
+                    "type":"PERCENTAGE",
+                    "value one":"20",
+                    "value two":"10"
+                }
+            },
+            {
+                "total lot":"3",
+                "position":"BUY",
+                "option type":"CALL",
+                "expiry":"MONTHLY",
+                "select strike criteria":{
+                    "type":"CLOSEST PREMIUM",
+                    "premium":"50"
+                },
+                "take profit":{
+                    "type":"PERCENTAGE",
+                    "value":"50"
+                },
+                "stop loss":{
+                    "type":"PERCENTAGE",
+                    "value":"45"
+                },
+                "trail stop loss":{
+                    "type":"PERCENTAGE",
+                    "value one":"30",
+                    "value two":"10"
+                }
+            }
+        ]
+    },
+    {
+        "select index": "NIFTY",
+        "strategy start time":"9:35",
+        "strategy end time":"15:15",
+        "strategy list":[
+            {
+                "total lot":"4",
+                "position":"",
+                "option type":"",
+                "expiry":"",
+                "select strike criteria":{
+                    "type":"",
+                    "strike type":""
+                },
+                "take profit":{
+                    "type":"",
+                    "value":""
+                },
+                "stop loss":{
+                    "type":"",
+                    "value":""
+                },
+                "trail stop loss":{
+                    "type":"",
+                    "value one":"",
+                    "value two":""
+                }
+            }
+        ]
+    },
+    {
+        "select index": "",
+        "strategy list":[
+            {
+                "strategy start time":"",
+                "strategy end time":"",
+                "total lot":"",
+                "position":"",
+                "option type":"",
+                "expiry":"",
+                "select strike criteria":{
+                    "type":"",
+                    "premium":""
+                },
+                "take profit":{
+                    "type":"",
+                    "value":""
+                },
+                "stop loss":{
+                    "type":"",
+                    "value":""
+                },
+                "trail stop loss":{
+                    "type":"",
+                    "value one":"",
+                    "value two":""
+                }
+            }
+        ]
+    }
+]
